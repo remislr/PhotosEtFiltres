@@ -1,0 +1,311 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<link type="text/css" rel="stylesheet" href="stylesheet2.css" >
+    <title>Filtrage Photos</title> 
+  </head>
+  
+  <!--permet récupérer la taille image definie par utilisateur, taille limitee à 500 px-->
+
+<script>
+var h=80;
+function getValue() {
+    h = document.getElementById("in").value;
+	if (h>500) alert ("trop élevée");
+}
+</script>
+ <body>  
+    <section>
+		<article> 
+			<div style="padding:3px;">
+				<h1> Palette et Vignettes</h1>
+		
+				<p><b>Sur palette : </b><br><br>8 zones cliquables pour 8 vignettes<br>1 filtre par vignette <br>1 click sur zone -> 1(vignette + 1 filtre)<br>1 autre click -> réinitialise filtre<br>souris sur vignette -> autre image</p>		
+			</div>
+
+<!--8 zones cliquables sur la palette de couleurs sont faites avec Gimp, le code map est ici. Chaque area declenche une fonction JS et un parametre qui depend de la zone mais qui sert au choix de la vignette et du filtre qui va avec -->
+		
+			<div>
+				<img src="Palette-1.jpg" width="300" height="239" border="0" usemap="#image-map" />
+				<map name="image-map">
+				<area shape="circle" coords="115,186,15" href='javascript:changeVignette("20")'/>
+				<area shape="circle" coords="62,166,18" href='javascript:changeVignette("30")'/>
+				<area shape="circle" coords="41,124,19" href='javascript:changeVignette("40")'/>
+				<area shape="circle" coords="60,84,13" href='javascript:changeVignette("50")'/>
+				<area shape="circle" coords="92,50,16" href='javascript:changeVignette("60")'/>
+				<area shape="circle" coords="145,34,17" href='javascript:changeVignette("70")'/			
+				<area shape="circle" coords="204,39,17" href='javascript:changeVignette("80")'/>
+				<area shape="circle" coords="250,71,15" href='javascript:changeVignette("90")'/>
+			</map>
+		</div>
+
+<!--les boutons qui appellent la fonction avec un parametre qui sert au choix du filtre appliqué à image uploadée-->
+		
+		<div>
+			<h1>Filtres et image importée</h1>
+			<button onclick="changeClass('2')">Lumi +</button>
+			<button onclick="changeClass('3')">Lumi ++</button>
+			<button onclick="changeClass('4')">Cont 0</button>
+			<button onclick="changeClass('5')">Cont +</button>
+			<button onclick="changeClass('6')">Cont ++</button>
+			<button onclick="changeClass('7')">Gris 0</button>
+			<button onclick="changeClass('8')">Gris +</button>
+			<button onclick="changeClass('9')">Gris ++</button>			
+			<button onclick="changeClass('10')">Opacité</button>
+			<button onclick="changeClass('11')">Sépia</button>
+			<button onclick="changeClass('12')">Saturation</button>
+			<button onclick="changeClass('13')">Inversion</button> 
+			<button onclick="changeClass('1')">Lumopac</button>
+		</div>
+        
+	</article>
+
+	<article>    
+		<div class="titre"  >Des photos et des filtres</div>
+				
+			<h1><a href="image-1.jpg" id="fileSelect">Importez votre image</a></h1>	
+		
+		<div height="200px">			
+			<input type="text" placeholder="Image = < 500 px" id="in">							
+			<button type="button" onclick="getValue();">Validez</button>
+		</div>
+		
+		<input type="file" id="fileElem"  multiple="non" accept="image/*" style="display:none" onchange="handleFiles(this.files,h)">
+		
+		<div id="fileList" class="">
+			<p>Aucun fichier sélectionné !</p>
+		</div>
+		
+<!--	<button onclick="Image()">Taille min/max</button>
+			<button onclick="multip()">Multiple/Single</button>	-->	
+		
+	</article>
+	<article>
+
+<!--une partie des vignettes avec intitule, avec classe idem pour toutes au départ, passage de souris pour voir effet avec même filtre sur autre vignette-->
+
+		<div>
+			<figcaption>Touche blanche filtre lumi ++</figcaption>
+			<img id="one"src="Bresil.jpg" class="lumi2" width="200" style="margin:5px" onmouseover='this.src="image-12.jpg";'onmouseout='this.src="Bresil.jpg";'/>
+			<figcaption>Touche noire filtre gris ++</figcaption>
+			<img id="two"src="coyote.jpg"  class="lumi2" width="200" style="margin:5px" onmouseover='this.src="image-11.jpg";'onmouseout='this.src="coyote.jpg";'/> 
+			<figcaption>Touche violet filtre sepia</figcaption>
+			<img id="three" src="Bolivie.jpg" class="lumi2" width="200" style="margin:5px" onmouseover='this.src="Acatama.jpg";'onmouseout='this.src="Bolivie.jpg";'/>
+			<figcaption>Touche bleu filtre inv</figcaption>
+			<img id="four" src="image-1.jpg" class="lumi2" width="200" style="margin:5px" onmouseover='this.src="image-2.jpg";'onmouseout='this.src="image-1.jpg";'/>
+		</div>		
+			
+	</article>
+
+	<article>
+        <div>
+			<figcaption>Touche verte filtre satur</figcaption>
+			<img id="five"src="image-3.jpg" class="lumi2" width="200" style="margin:5px" onmouseover='this.src="image-4.jpg";'onmouseout='this.src="image-3.jpg";'/>
+			<figcaption>Touche jaune filtre opac</figcaption>
+			<img id="six"src="image-5.jpg"  class="lumi2" width="200" style="margin:5px" onmouseover='this.src="image-6.jpg";'onmouseout='this.src="image-5.jpg";'/> 
+			<figcaption>Touche orange filtre hue</figcaption>
+			<img id="seven" src="image-7.jpg" class="lumi2" width="200" style="margin:5px" onmouseover='this.src="image-8.jpg";'onmouseout='this.src="image-7.jpg";'/>
+			<figcaption>Touche rouge filtre gris ++</figcaption>
+			<img id="eight" src="image-9.jpg" class="lumi2" width="200" style="margin:5px" onmouseover='this.src="image-10.jpg";'onmouseout='this.src="image-9.jpg";'/>
+		
+        </div>
+	</article>
+</section>
+ 
+<!--code pour uploader image depuis ordi.la fonction passe taille image, la valeur de h defini par utilisateur-->
+
+ <script>
+window.URL = window.URL || window.webkitURL;
+
+var fileSelect = document.getElementById("fileSelect"),
+    fileElem = document.getElementById("fileElem"),
+    fileList = document.getElementById("fileList");
+	
+fileSelect.addEventListener("click", function (e) {
+  if (fileElem) {
+    fileElem.click();
+  }
+  e.preventDefault(); // empêche la navigation vers "#"
+}, false);
+
+var adr="";
+function handleFiles(files,h) {
+  if (!files.length) {
+    fileList.innerHTML = "<p>Aucun fichier sélectionné !</p>";
+  } else {
+    fileList.innerHTML = "";
+    var list = document.createElement("ul");
+    fileList.appendChild(list);
+    for (var i = 0; i < files.length; i++) {
+      var li = document.createElement("li");
+      list.appendChild(li);
+
+      var img = document.createElement("img");
+      img.src = window.URL.createObjectURL(files[i]);
+	  adr=img.src;
+	  img.height=h;
+	 
+      img.onload = function() {
+        window.URL.revokeObjectURL(this.src);
+      }
+      li.appendChild(img);
+      var info = document.createElement("span");
+      info.innerHTML = files[i].name + ": " + files[i].size + " bytes";
+      li.appendChild(info);
+    }
+  }
+
+}
+</script>
+
+<!--le choix désigne par comparaison avec case du switch et quelle filtre on met sur image téléchargee. le code lumopac associe 2 filtres, brightness et opacity-->
+
+<script>  
+function changeClass(choix)
+{
+	switch (choix) {
+		case '1': 
+			document.getElementById('fileList').className = "lumopac";	
+			break;
+		case '2':
+			document.getElementById('fileList').className = "lumi2";
+			break;
+		case '3': 
+			document.getElementById('fileList').className = "lumi3";
+			break;
+		case '4': 
+			document.getElementById('fileList').className = "cont1";
+			break;
+		case '5':
+			document.getElementById('fileList').className ="cont2";
+			break;
+		case '6':
+			document.getElementById('fileList').className ="cont3";
+			break;
+		case '7': 
+			document.getElementById('fileList').className ="gris1";
+			break;			
+		case '8': 
+			document.getElementById('fileList').className ="gris2";
+			break;
+		case '9':
+			document.getElementById('fileList').className ="gris3";
+			break;
+		case '10': 
+			document.getElementById('fileList').className ="opac";
+			break;	
+		case '11': 
+			document.getElementById('fileList').className ="sep";
+			break;
+		case '12':
+			document.getElementById('fileList').className ="satur";
+			break;
+		case '13': 
+			document.getElementById('fileList').className ="inver";
+			break;
+	}
+}
+</script>
+<script>
+<!-- la fonction changeVignette() transmet (id) demandé par la palette pour lui mettre un filtre On met une variable (cond) qui changera de valeur à chaque passage de (case()).on revient avec ça avec filtre lumi2 à image non retouché-->
+var cond=1;
+function changeVignette(idee)
+{
+terme= parseInt(idee);
+	switch (idee) { 
+		case '20':
+			if (cond==0){		
+				document.getElementById('one').className = "lumi2";
+				cond=1;}
+			else {				
+				document.getElementById('one').className = "lumi3"
+				cond=0;}
+			break;		
+		case '30':
+			if (cond==0){		
+				document.getElementById('two').className = "lumi2";
+				cond=1;}
+			else {				
+				document.getElementById('two').className = "gris3"
+				cond=0;}
+			break;
+		case '40':
+			if (cond==0){		
+				document.getElementById('three').className = "lumi2";
+				cond=1;}
+			else {				
+				document.getElementById('three').className = "sep"
+				cond=0;}	
+			break;
+		case '50':
+			if (cond==0){		
+				document.getElementById('four').className = "lumi2";
+				cond=1;}
+			else {				
+				document.getElementById('four').className = "inver"
+				cond=0;}
+			break;	
+		case '60':
+			if (cond==0){		
+				document.getElementById('five').className = "lumi2";
+				cond=1;}
+			else {				
+				document.getElementById('five').className = "satur"
+				cond=0;}
+			break;	
+		case '70':
+			if (cond==0){		
+				document.getElementById('six').className = "lumi2";
+				cond=1;}
+			else {				
+				document.getElementById('six').className = "opa"
+				cond=0;}
+			break;		
+		case '80':
+			if (cond==0){		
+				document.getElementById('seven').className = "lumi2";
+				cond=1;}
+			else {				
+				document.getElementById('seven').className = "huerot";
+				cond=0;}
+			break;					
+		case '90':
+			if (cond==0){		
+				document.getElementById('eight').className = "lumi2";
+				cond=1;}
+			else {				
+				document.getElementById('eight').className = "gris3"
+				cond=0;}
+			break;
+			
+		}
+}
+</script>
+</body>
+ </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
