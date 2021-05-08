@@ -6,20 +6,27 @@
     <title>Filtrage Photos</title> 
   </head>
    
-  <!--getValue()permet récupérer la taille "h" image definie par utilisateur,limitee à 600 px-->
+  <!--valtail()permet récupérer la taille (hauteur "h")image definie par utilisateur,limitee à 500 px-->
 <script>
-var h = 700;
-function getValue() {
-    h = document.getElementById("in").value;
+
+function valTail() {
+   larg = document.getElementById("in").value;
 /*pour modifier taille image meme sur la photo par défaut, on crée sur élément "new" une variable "carImg"*/
-	var carImg = document.getElementById("new");
+	carImg = document.getElementById("new");
+	if (larg>500) {
+		carImg.width = 500;
+		alert ("Largeur limitée à 500 px");
+		}
+/* si largeur = ok mais hauteur > 500, on réduit l'image avec hauteur 500*/
+/*	if (carImg.height >500){
+		r = carImg.height/500;
+		carImg.width = carImg.width/r;
+		carImg.height = 500;
+		}*/
+	else carImg.width = larg;	
 	
-/*on lui donne la valeur "h" qui est à 700 px mais qu'on peut modifier comme images importées*/
-		carImg.width = h;
-		
-/*on limite la taille image à 700px*/		
-	if (h>700) alert ("trop élevée");
-	
+/*on limite la valeur "larg" qui est à 500 px mais qu'on peut modifier comme pour les images importées*/		
+			
 }
 </script>
  <body>  
@@ -69,24 +76,23 @@ function getValue() {
 		<div class="titre"  >Des photos et des filtres</div>		
 		<div>
 <!--on utilise "placeholder associé à "input" pour entrer la taille image "h"-->		
-			<input type="text" placeholder="Image =< 700 px" id="in">
+			<input type="text" placeholder="Larg IMG =< 500 px" id="in">
 			
 <!--le bouton sert àdéclencher "getValue() pour saisir la taille "h"-->			
-			<button class="bouton" onclick="getValue();">Validez la taille</button><br><br>
+			<button class="bouton" onclick="valTail();">Validez la taille</button><br><br>
 			
 <!--accès par "input" et type (file) aux fichiers utilisateur, on masque le "input" et on associe un "label" plus beau. On déclenche par click la fonction "import" qui importera le fichier choisi sur ordi utilisateur-->
-			<input type="file" id="fileElem" accept="image/*" style ="display:none" onchange = "importFileandPreview(h)"><label for = "fileElem">Importer votre image</label>
+			<input type="file" id="fileElem" accept="image/*" style ="display:none" onchange = "importFileandPreview()"><label for = "fileElem">Importer votre image</label>
 			
 			<button class="mybouton" onclick="telecharge()">Téléchargement</button>
 <!--			<form>
 				<input type="button" display="none" value="Telechargement" onclick="telecharge()">
-				</form>	-->
-				
+				</form>	-->				
 		</div>
 		
 <!--photos importée	se placeront ici, "Id new" servira à la fonction "changeClass", la class "lst" à identifier element pour le fichier importé. On applique sur image par la classe "frame" un cadre (voir css)-->			
 		<div class="frame">
-			<img id="new" class="lst" src="phototest.jpg"  width="700" height="auto" border="0"
+			<img id="new" class="lst" src="phototest.jpg"  width="500" height="auto" border="0"
 		</div>
 	</article>
 	<article>
@@ -96,7 +102,7 @@ la classe servira à définir le filtre pour "(idee)" choisi-->
 
 		<div>
 <!--les vignettes avec leur intitulé pour associer avec les zones de la palette, changement de vue avec la souris-->		
-			<figcaption>Touche blanche   Lumi ++</figcaption>
+			<figcaption style="margin-top:15px" >Touche blanche   Lumi</figcaption>
 			<img id="one"src="Bresil.jpg" class="lumi2" width="150" style="margin:5px" onmouseover='this.src="image-12.jpg";'onmouseout='this.src="Bresil.jpg";'/>
 			<figcaption>Touche noire   Gris ++</figcaption>
 			<img id="two"src="coyote.jpg"  class="lumi2" width="150" style="margin:5px" onmouseover='this.src="image-11.jpg";'onmouseout='this.src="coyote.jpg";'/> 
@@ -110,7 +116,7 @@ la classe servira à définir le filtre pour "(idee)" choisi-->
 
 	<article>
         <div>
-			<figcaption>Touche verte   Satur</figcaption>
+			<figcaption style="margin-top:15px">Touche verte   Satur</figcaption>
 			<img id="five"src="image-3.jpg" class="lumi2" width="150" style="margin:5px" onmouseover='this.src="image-4.jpg";'onmouseout='this.src="image-3.jpg";'/>
 			<figcaption>Touche jaune   Opac</figcaption>
 			<img id="six"src="image-5.jpg"  class="lumi2" width="150" style="margin:5px" onmouseover='this.src="image-6.jpg";'onmouseout='this.src="image-5.jpg";'/> 
@@ -122,13 +128,14 @@ la classe servira à définir le filtre pour "(idee)" choisi-->
 	</article>
 </section>
 
-<!--code pour uploader image depuis ordi.la fonction passe taille image, la valeur de "h" defini par utilisateur dans "getValue()"-->
+<!--code pour uploader image depuis ordi.la fonction passe taille image, la valeur de "h" defini par utilisateur dans "valtail()"-->
 <script> 
-var adr = 0;
-window.URL = window.URL || window.webkitURL;
+/*on initialise adr avec adresse de image accueil qui permettra téléchargement*/  
+/*adr = "https://jasold.github.io/jasold/phototest.jpg";
+window.URL = window.URL || window.webkitURL;*/
 
-/* fonction qui traite importation avec passage de la taille "h" image créé par "getValue()"*/
-function importFileandPreview(h) {
+/* fonction qui traite importation avec passage de la taille "h" image créé par "valTail()"*/
+function importFileandPreview() {
 
 /* retour du 1er élément de "lst"*/
   var preview = document.querySelector('.lst');
@@ -137,14 +144,13 @@ function importFileandPreview(h) {
   var file = document.querySelector('input[type=file]').files[0];
   
 /* creation URL qui représente l'objet file*/  
-  preview.src = window.URL.createObjectURL(file);
-  adr = preview.src;
+	preview.src = window.URL.createObjectURL(file);
+	
+/*adr utilisée pour fonction telechargement*/
+	adr = preview.src;
   
-/* element renvoyé est celui qui a pour  "Id new" avec image par defaut plus haut*/
-largeur= document.getElementById('new');
-
-/* la largeur peut avoir un attribut "width"  et on lui met "h"*/
-largeur.width = h;
+/* element renvoyé est celui qui a pour  "Id new" avec image par defaut plus haut
+	imagex= document.getElementById('new');*/
 
 /*il est conseillé de libérer de la mémoire en effaçant "URL" créé plus haut*/
     window.URL.revokeObjectURL(this.src);
@@ -279,7 +285,7 @@ function changeVignette(idee)
 /*utiliser balise ancre <a href="" /> non liée au DOM, donc ne fait pas partie de la structure HTML du projet mais existe (fonction importFile, preview.src=adr)comme objet JavaScript*/
 function telecharge()
 {
-var name="fichier tele";
+var name="filtrage.img";
   const anchor = document.createElement('a')
   anchor.href = adr;
 /*on attribue un nom au fichier créé par téléchargement*/  
@@ -290,4 +296,28 @@ var name="fichier tele";
 </script>
 </body>
 </html>
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
